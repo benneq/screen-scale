@@ -15,13 +15,10 @@ export const FontSelect: React.FC<Props> = ({presets, value, onChange}) => {
   }
 
   return (
-    <label>
-      Font:
-      <select value={value} onChange={handleFontChange}>
-        {presets.map((preset, i) =>
-          <option key={i} value={preset}>{preset}</option>  
-        )}
-      </select>
-    </label>
+    <select value={value} onChange={handleFontChange}>
+      {presets.map((preset, i) =>
+        <option key={i} value={preset}>{preset}</option>  
+      )}
+    </select>
   );
 }

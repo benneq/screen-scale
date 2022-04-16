@@ -14,6 +14,7 @@ const createScreenData = (diagonal: number, width: number, height: number): Scre
 }
 
 const presets = [
+  createScreenData(13, 1440, 900),
   createScreenData(24, 1920, 1080),
   createScreenData(27, 2560, 1440),
   createScreenData(32, 3840, 2160),
@@ -42,7 +43,17 @@ export default function App() {
   const [src, setSrc] = useState<ScreenData>(presets[0]);
   const [dest, setDest] = useState<ScreenData>(presets[2]);
   const [font, setFont] = useState<string>(fonts[0]);
+  const [fontWeightBold, setFontWeightBold] = useState<boolean>(false);
+  const [fontStyleItalic, setFontStyleItalic] = useState<boolean>(false);
   const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.disabled);
+
+  const handleFontWeightBoldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFontWeightBold(e.target.checked);
+  }
+
+  const handleFontStyleItalicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFontStyleItalic(e.target.checked);
+  }
 
   const handleDisplayModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayMode(Number(e.target.value));
@@ -51,8 +62,6 @@ export default function App() {
   const srcPPI = calcPPI(src);
   const destPPI = calcPPI(dest);
   const scaleFactor = srcPPI / destPPI;
-
-  console.log(font)
 
   return (
     <div>
@@ -81,12 +90,32 @@ export default function App() {
       </fieldset>
 
       <fieldset>
-        <legend>Display Mode</legend>
+        <legend>Font</legend>
         <FontSelect
           presets={fonts}
           value={font}
           onChange={setFont}
         />
+        <label>
+          <input
+            type="checkbox"
+            checked={fontWeightBold}
+            onChange={handleFontWeightBoldChange}
+          />
+          Bold
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={fontStyleItalic}
+            onChange={handleFontStyleItalicChange}
+          />
+          Italic
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Display Mode</legend>
         <label>
           <input
             type="radio"
@@ -119,7 +148,12 @@ export default function App() {
         </label>
       </fieldset>
 
-      <div style={{ display: 'flex', fontFamily: font }}>
+      <div style={{
+        display: 'flex',
+        fontFamily: font,
+        fontWeight: fontWeightBold ? 'bold' : 'normal',
+        fontStyle: fontStyleItalic ? 'italic' : 'normal'
+      }}>
         {displayMode !== DisplayMode.enabled && (
           <div style={{ flex: '1', width: 'calc(100vw - (100vw - 50%))' }}>
             Scale: 1
