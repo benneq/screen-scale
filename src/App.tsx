@@ -46,7 +46,9 @@ export default function App() {
           value={src}
           onChange={setSrc}
         />
-        PPI: {srcPPI}
+        <span style={{ display: 'inline-block' }}>
+          PPI: {srcPPI}
+        </span>
       </fieldset>
 
       <fieldset>
@@ -56,7 +58,9 @@ export default function App() {
           value={dest}
           onChange={setDest}
         />
-        PPI: {destPPI}
+        <span style={{ display: 'inline-block' }}>
+          PPI: {destPPI}
+        </span>
       </fieldset>
 
       <fieldset>

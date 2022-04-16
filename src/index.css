@@ -9,5 +9,10 @@ body {
 
 input, select {
   margin-left: 4px;
-  margin-right: 8px;
+  margin-right: 4px;
+}
+
+label {
+  margin-right: 4px;
+  display: inline-block;
 }
