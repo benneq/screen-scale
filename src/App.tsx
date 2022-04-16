@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FontSelect } from './FontSelect';
 import { Result } from './Result';
 import { ScreenData, ScreenDataForm } from './ScreenDataForm';
 
@@ -20,6 +21,19 @@ const presets = [
   createScreenData(42, 3840, 2160)
 ];
 
+const fonts = [
+  "Arial, sans-serif",
+  "Verdana, sans-serif",
+  "Helvetica, sans-serif",
+  "Tahoma, sans-serif",
+  "'Trebuchet MS', sans-serif",
+  "'Times New Roman', serif",
+  "Georgia, serif",
+  "Garamond, serif",
+  "'Courier New', monospace",
+  "'Brush Script MT', cursive"
+];
+
 const calcPPI = (value: ScreenData): number => {
   return Math.sqrt(Math.pow(value.width, 2) + Math.pow(value.height, 2)) / value.diagonal;
 };
@@ -27,6 +41,7 @@ const calcPPI = (value: ScreenData): number => {
 export default function App() {
   const [src, setSrc] = useState<ScreenData>(presets[0]);
   const [dest, setDest] = useState<ScreenData>(presets[2]);
+  const [font, setFont] = useState<string>(fonts[0]);
   const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.disabled);
 
   const handleDisplayModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +51,8 @@ export default function App() {
   const srcPPI = calcPPI(src);
   const destPPI = calcPPI(dest);
   const scaleFactor = srcPPI / destPPI;
+
+  console.log(font)
 
   return (
     <div>
@@ -65,6 +82,11 @@ export default function App() {
 
       <fieldset>
         <legend>Display Mode</legend>
+        <FontSelect
+          presets={fonts}
+          value={font}
+          onChange={setFont}
+        />
         <label>
           <input
             type="radio"
@@ -97,7 +119,7 @@ export default function App() {
         </label>
       </fieldset>
 
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', fontFamily: font }}>
         {displayMode !== DisplayMode.enabled && (
           <div style={{ flex: '1', width: 'calc(100vw - (100vw - 50%))' }}>
             Scale: 1
