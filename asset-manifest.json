@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/screen-scale/static/css/main.ff89ea2d.css",
-    "main.js": "/screen-scale/static/js/main.7468e61b.js",
+    "main.js": "/screen-scale/static/js/main.fb83e90c.js",
     "index.html": "/screen-scale/index.html",
     "main.ff89ea2d.css.map": "/screen-scale/static/css/main.ff89ea2d.css.map",
-    "main.7468e61b.js.map": "/screen-scale/static/js/main.7468e61b.js.map"
+    "main.fb83e90c.js.map": "/screen-scale/static/js/main.fb83e90c.js.map"
   },
   "entrypoints": [
     "static/css/main.ff89ea2d.css",
-    "static/js/main.7468e61b.js"
+    "static/js/main.fb83e90c.js"
   ]
 }
