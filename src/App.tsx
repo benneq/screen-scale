@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { Result } from './Result';
 import { ScreenData, ScreenDataForm } from './ScreenDataForm';
 
-const loremIpsum = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
-
-const fontSizes = [6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 21, 24, 36, 48, 60, 72];
+enum DisplayMode {
+  enabled,
+  disabled,
+  sideBySide
+}
 
 const createScreenData = (diagonal: number, width: number, height: number): ScreenData => {
   return { diagonal, width, height };
@@ -24,20 +27,20 @@ const calcPPI = (value: ScreenData): number => {
 export default function App() {
   const [src, setSrc] = useState<ScreenData>(presets[0]);
   const [dest, setDest] = useState<ScreenData>(presets[2]);
-  const [enabled, setEnabled] = useState(false);
+  const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.disabled);
 
-  const handleEnabledChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEnabled(e.target.checked);
+  const handleDisplayModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayMode(Number(e.target.value));
   }
 
   const srcPPI = calcPPI(src);
   const destPPI = calcPPI(dest);
-  const scaleFactor = enabled ? srcPPI / destPPI : 1;
+  const scaleFactor = srcPPI / destPPI;
 
   return (
     <div>
       <fieldset>
-        <legend>Source:</legend>
+        <legend>Source</legend>
         <ScreenDataForm
           presets={presets}
           value={src}
@@ -47,7 +50,7 @@ export default function App() {
       </fieldset>
 
       <fieldset>
-        <legend>Destination:</legend>
+        <legend>Destination</legend>
         <ScreenDataForm
           presets={presets}
           value={dest}
@@ -56,18 +59,55 @@ export default function App() {
         PPI: {destPPI}
       </fieldset>
 
-      <label>
-        Enabled:
-        <input type="checkbox" checked={enabled} onChange={handleEnabledChange} />
-      </label>
+      <fieldset>
+        <legend>Display Mode</legend>
+        <label>
+          <input
+            type="radio"
+            name="displayMode"
+            value={DisplayMode.enabled}
+            checked={displayMode === DisplayMode.enabled}
+            onChange={handleDisplayModeChange}
+          />
+          Enabled
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="displayMode"
+            value={DisplayMode.disabled}
+            checked={displayMode === DisplayMode.disabled}
+            onChange={handleDisplayModeChange}
+          />
+          Disabled
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="displayMode"
+            value={DisplayMode.sideBySide}
+            checked={displayMode === DisplayMode.sideBySide}
+            onChange={handleDisplayModeChange}
+          />
+          Side-by-Side
+        </label>
+      </fieldset>
 
-      Scale: {scaleFactor}
-
-      <div style={{ zoom: scaleFactor, overflow: 'hidden' }}>
-        {fontSizes.map(fontSize =>
-          <div key={fontSize} style={{ fontSize: `${fontSize}px`, whiteSpace: 'nowrap' }}>{fontSize}px: {loremIpsum}</div>  
+      <div style={{ display: 'flex' }}>
+        {displayMode !== DisplayMode.enabled && (
+          <div style={{ flex: '1', width: 'calc(100vw - (100vw - 50%))' }}>
+            Scale: 1
+            <Result zoom={1} />
+          </div>
+        )}
+        {displayMode !== DisplayMode.disabled && (
+          <div style={{ flex: '1', width: 'calc(100vw - (100vw - 50%))' }}>
+            Scale: {scaleFactor}
+            <Result zoom={scaleFactor} />
+          </div>
         )}
       </div>
+
     </div>
   );
 }
